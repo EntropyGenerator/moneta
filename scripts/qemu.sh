@@ -3,7 +3,8 @@
 MONPATH=$(realpath $PWD/..)
 MONBUILD=$MONPATH/build
 DRIVE_FILE=$MONBUILD/bullseye.qcow2
-LIBAGAMOTTO=$MONPATH/build/libagamotto/libagamotto_nomain.so
+#LIBAGAMOTTO=$MONPATH/build/libagamotto/libagamotto_nomain.so
+LIBAGAMOTTO=$MONPATH/build/libagamotto/libagamotto.so
 
 ARCH=$(uname -m)
 
@@ -27,7 +28,7 @@ if [ $ARCH = x86_64 ]; then
 		-append "console=ttyS0 root=/dev/sda earlyprintk=serial net.ifnames=0 pci=nomsi" \
 		-drive file=$DRIVE_FILE,format=qcow2 \
 		-enable-kvm \
-		-device vfio-pci,host=08:00.0,id=gpu,multifunction=on,x-vga=on  \
+		-device vfio-pci,host=64:00.0,id=gpu,multifunction=on,x-vga=on  \
 		-nographic -serial mon:stdio \
 		-object memory-backend-file,size=16777216,mem-path=/dev/shm/syzkaller-vm0-in,share,id=mb1 \
 		-device ivshmem-plain,memdev=mb1,master=on \

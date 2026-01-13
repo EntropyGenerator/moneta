@@ -7,3 +7,8 @@
 /guest/linux
 
 .vscode
+/.direnv/
+
+/open-gpu-kernel-modules/
+
+/scripts/NVIDIA-Linux-x86_64-530.41.03.run

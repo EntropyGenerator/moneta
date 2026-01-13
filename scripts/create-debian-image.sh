@@ -188,8 +188,9 @@ fi
 # Create a /dev/vim2m symlink for the device managed by the vim2m driver
 echo 'ATTR{name}=="vim2m", SYMLINK+="vim2m"' | sudo tee -a $DIR/etc/udev/rules.d/50-udev-default.rules
 
-sudo chroot $DIR /bin/bash -c "echo \"deb https://deb.debian.org/debian bookworm main\" | sudo tee /etc/apt/sources.list > /dev/null ; sudo apt update ; sudo apt -t bookworm -y install libc6"
-sudo chroot $DIR /bin/bash -c "sudo sed -i '$ d' /etc/apt/sources.list ; echo \"deb https://deb.debian.org/debian bullseye main\" | sudo tee /etc/apt/sources.list > /dev/null ; sudo apt update"
+# Fix: command not found
+sudo chroot $DIR /bin/bash -c "source /etc/profile ; echo \"deb https://deb.debian.org/debian bookworm main\" | sudo tee /etc/apt/sources.list > /dev/null ; sudo apt update ; sudo apt -t bookworm -y install libc6"
+sudo chroot $DIR /bin/bash -c "source /etc/profile ; sudo sed -i '$ d' /etc/apt/sources.list ; echo \"deb https://deb.debian.org/debian bullseye main\" | sudo tee /etc/apt/sources.list > /dev/null ; sudo apt update"
 
 # Build a disk image
 dd if=/dev/zero of=$DIST.img bs=1M seek=$SEEK count=1

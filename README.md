@@ -1,5 +1,7 @@
 # Moneta: Ex-Vivo GPU Driver Fuzzing by Recalling In-Vivo Execution States
 
+Edit: Ubuntu 22.04 has no gcc-10, and the original author added `log` to `.gitignore`, resulting in the loss of the `syzkaller/pkg/log` directory. The original code is unable to compile and run at all. This fork is tended to fix the problems.
+
 ## Setup Instructions
 
 ### Prerequisites
@@ -11,18 +13,18 @@ sudo apt install git libglib2.0-dev libfdt-dev libpixman-1-dev zlib1g-dev ninja-
 sudo apt install libelf-dev debootstrap libslirp-dev
 # For building a custom Ubuntu host
 sudo apt install libncurses-dev gawk flex bison openssl libssl-dev dkms libelf-dev libudev-dev libpci-dev libiberty-dev autoconf llvm flex fakeroot build-essential crash kexec-tools makedumpfile kernel-wedge libncurses5 libncurses5-dev asciidoc binutils-dev libcap-dev default-jdk curl zstd
+# For building syzkaller
+sudo apt install golang-go clang-format
 ```
 
 - CMake 3.7.2 or higher (`cmake -version`)
-- Go 1.14.2 (`go version`)
-  - Download <https://golang.org/dl/go1.14.2.linux-amd64.tar.gz>
-  - Install using instructions found at: <https://golang.org/doc/install>
+- Go 1.18 (`go version`)
 - Python 3
 
 ### Download source code
 
 ```bash
-git clone https://github.com/yonsei-sslab/moneta.git
+git clone https://github.com/EntropyGenerator/moneta.git
 cd moneta
 export MONPATH=$PWD # assumed by commands that follow
 export PATH=$MONPATH/build/qemu/install/bin:$PATH # assumed by commands that follow
@@ -30,11 +32,11 @@ export PATH=$MONPATH/build/qemu/install/bin:$PATH # assumed by commands that fol
 
 ### Change the host Linux kernel for custom hypercall support
 
-Build the host Linux kernel with [our patch](host/x86-64.patch) applied, install & reboot.
+Build the host Linux kernel 6.18.2 with [our patch](host/x86-64.patch) applied, install & reboot.
 
 #### Tested environment
 
-- [Ubuntu 22.04](https://git.launchpad.net/~ubuntu-kernel/ubuntu/+source/linux/+git/jammy/tag/?h=Ubuntu-hwe-5.19-5.19.0-40.41_22.04.1) on Intel Xeon 8358
+- Ubuntu 22.04 in privileged distrobox on NixOS 25.11, Linux kernel 6.18.2, AMD Ryzen HX 370, Nvidia GeForce RTX 4060
 
 ### Setup Syzkaller
 
@@ -44,7 +46,7 @@ go env -w GOPATH=$MONPATH/go
 export GOPATH=$(go env GOPATH)
 # Check `CGO_ENABLED=1` in your environment.
 cd $MONPATH/go/src/github.com/google/syzkaller
-make generate && make CC=gcc-10
+make generate && make CC=gcc-11
 ```
 
 ### Generate necessary files

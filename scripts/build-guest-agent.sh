@@ -20,7 +20,7 @@ sudo cp -a "$GUEST_AGENT_SRC" "$DEST"
 
 # Build guest agent
 echo 'Building guest agent from source...' >&2
-sudo -E chroot "$DIR" sh -c "cd \"${INSTALL_PATH}/agent\"; ./bootstrap; ./configure --disable-mpers; make"
+sudo -E chroot "$DIR" /bin/bash -c "source /etc/profile ; cd \"${INSTALL_PATH}/agent\"; ./bootstrap; ./configure --disable-mpers; make"
 
 # Move guest agent binary to PATH
 GUEST_AGENT_OUT="${DEST}/agent/src/strace"

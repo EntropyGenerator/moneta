@@ -536,9 +536,9 @@ int main(int argc, char** argv)
 		fail("mmap of output file failed");
 #endif
 
-		// Prevent test programs to mess with these fds.
-		// Due to races in collider mode, a program can e.g. ftruncate one of these fds,
-		// which will cause fuzzer to crash.
+	// Prevent test programs to mess with these fds.
+	// Due to races in collider mode, a program can e.g. ftruncate one of these fds,
+	// which will cause fuzzer to crash.
 #if 1 //! SYZ_EXECUTOR_USES_VIRT_SHMEM
 	close(kInFd);
 	close(kOutFd);

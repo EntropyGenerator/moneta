@@ -6,11 +6,11 @@ IMAGE=bullseye.qcow2
 
 MNT_DIR=$(./mount.sh -o $IMAGE)
 
-if [ -d $GOPATH ]; then
+if [ -d $MONPATH ]; then
 	if [ $ARCH == x86_64 ]; then
-		sudo cp -p $GOPATH/src/github.com/google/syzkaller/bin/linux_amd64/syz-* $MNT_DIR/
+		sudo cp -p $MONPATH/go/src/github.com/google/syzkaller/bin/linux_amd64/syz-* $MNT_DIR/
 	elif [ $ARCH == aarch64 ]; then
-		sudo cp -p $GOPATH/src/github.com/google/syzkaller/bin/linux_arm64/syz-* $MNT_DIR/
+		sudo cp -p $MONPATH/go/src/github.com/google/syzkaller/bin/linux_arm64/syz-* $MNT_DIR/
 	fi
 fi
 

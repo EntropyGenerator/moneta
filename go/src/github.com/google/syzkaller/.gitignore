@@ -7,6 +7,5 @@ bin/
 
 # jetbrains goland
 .idea
-log
 
 eval
